@@ -33,6 +33,7 @@ export default function DestinationsManagementPage() {
     inclusions: [""],
     exclusions: [""],
     featured: false,
+    showOnHomepage: true,
     rating: 4.5,
   });
 
@@ -71,6 +72,7 @@ export default function DestinationsManagementPage() {
         inclusions: destination.inclusions,
         exclusions: destination.exclusions,
         featured: destination.featured,
+        showOnHomepage: destination.showOnHomepage ?? true,
         rating: destination.rating,
       });
     } else {
@@ -88,6 +90,7 @@ export default function DestinationsManagementPage() {
         inclusions: [""],
         exclusions: [""],
         featured: false,
+        showOnHomepage: true,
         rating: 4.5,
       });
     }
@@ -235,7 +238,12 @@ export default function DestinationsManagementPage() {
                       Featured
                     </div>
                   )}
-                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
+                  {destination.showOnHomepage && (
+                    <div className="absolute top-2 right-2 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      Homepage
+                    </div>
+                  )}
+                  <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-semibold">{destination.rating}</span>
                   </div>
@@ -567,18 +575,41 @@ export default function DestinationsManagementPage() {
               </Button>
             </div>
 
-            {/* Featured Toggle */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="featured"
-                checked={formData.featured}
-                onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                className="w-4 h-4 text-purple-600 rounded"
-              />
-              <label htmlFor="featured" className="text-sm font-medium">
-                Featured Destination
-              </label>
+            {/* Visibility Options */}
+            <div className="space-y-4 p-4 bg-gray-50 rounded-lg border">
+              <h3 className="font-semibold text-gray-900">Visibility Settings</h3>
+              
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="showOnHomepage"
+                  checked={formData.showOnHomepage}
+                  onChange={(e) => setFormData({ ...formData, showOnHomepage: e.target.checked })}
+                  className="w-4 h-4 text-purple-600 rounded"
+                />
+                <label htmlFor="showOnHomepage" className="text-sm font-medium">
+                  Show on Homepage
+                </label>
+                <span className="text-xs text-gray-500 ml-2">
+                  (Controls if this destination appears on the home page)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                  className="w-4 h-4 text-purple-600 rounded"
+                />
+                <label htmlFor="featured" className="text-sm font-medium">
+                  Featured Destination
+                </label>
+                <span className="text-xs text-gray-500 ml-2">
+                  (Shows "Featured" badge on destination card)
+                </span>
+              </div>
             </div>
 
             {/* Submit Buttons */}

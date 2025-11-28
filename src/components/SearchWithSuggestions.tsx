@@ -34,14 +34,12 @@ export const SearchWithSuggestions = ({ onSearch, className = "" }: SearchWithSu
   }, []);
 
   useEffect(() => {
-    // Filter suggestions based on search query
+    // Filter suggestions based on search query - only by name
     if (searchQuery.trim().length > 0) {
       const filtered = allDestinations.filter(
         (dest) =>
-          dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          dest.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          dest.highlights.some((h) => h.toLowerCase().includes(searchQuery.toLowerCase()))
-      ).slice(0, 5); // Limit to 5 suggestions
+          dest.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 8); // Limit to 8 suggestions
       setSuggestions(filtered);
       setShowSuggestions(true);
     } else {
@@ -83,14 +81,14 @@ export const SearchWithSuggestions = ({ onSearch, className = "" }: SearchWithSu
         </div>
       </div>
 
-      {/* Suggestions Dropdown */}
+      {/* Simple Text Suggestions Dropdown */}
       <AnimatePresence>
         {showSuggestions && suggestions.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full mt-2 w-full bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-gray-200"
+            className="absolute top-full mt-2 w-full bg-white rounded-xl shadow-2xl overflow-hidden z-50 border border-gray-200"
           >
             {suggestions.map((destination) => (
               <Link
@@ -101,21 +99,8 @@ export const SearchWithSuggestions = ({ onSearch, className = "" }: SearchWithSu
                   setSearchQuery("");
                 }}
               >
-                <div className="px-6 py-4 hover:bg-purple-50 transition-colors border-b last:border-b-0 cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900">{destination.name}</h4>
-                      <p className="text-sm text-gray-600 line-clamp-1">
-                        {destination.shortDescription}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-600">From</p>
-                      <p className="font-bold text-purple-600">
-                        ₹{destination.price.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
+                <div className="px-6 py-3 hover:bg-purple-50 transition-colors border-b last:border-b-0 cursor-pointer">
+                  <p className="text-gray-900 font-medium">{destination.name}</p>
                 </div>
               </Link>
             ))}
